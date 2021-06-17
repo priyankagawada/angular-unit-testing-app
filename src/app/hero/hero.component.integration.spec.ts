@@ -1,15 +1,29 @@
-import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { Directive, Input, NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
+import { Router } from "@angular/router";
 import { HeroComponent } from "./hero.component";
 
+// fake routerLink  - RouterLink is a directive
+@Directive({
+  selector: "routerLink",
+})
+export class RouterLinkDirectiveStub {
+  @Input("routerLink") linkedParams: any;
+  navigateTo: any = null;
+  host: { "(click)": "OnClick()" };
+
+  OnClick() {
+    this.navigateTo = this.linkedParams;
+  }
+}
 describe("HeroComponent Suite", () => {
   let fixture: ComponentFixture<HeroComponent>;
 
   beforeEach(() => {
     // loading of modules along with the required components
     TestBed.configureTestingModule({
-      declarations: [HeroComponent],
+      declarations: [HeroComponent, RouterLinkDirectiveStub],
       schemas: [NO_ERRORS_SCHEMA], // ignore routerLink
     });
 
